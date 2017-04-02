@@ -1,12 +1,13 @@
 body {
-    color: black;
-    font-size: 16px;
-    margin: 0px auto 0px auto;
-    width: 600px;
+  color: black;
+  font-size: 16px;
+  margin: 0px auto 0px auto;
+  width: 80%;
+  max-width: 1024px;
 }
 
 div#header {
-    border-bottom: 2px solid black;
+    border-bottom: 2px solid #1081a8;
     margin-bottom: 30px;
     padding: 12px 0px 12px 0px;
 }
