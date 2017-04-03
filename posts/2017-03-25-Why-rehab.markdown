@@ -1,17 +1,17 @@
 ---
-title: Why coding rehab?
+title: Why Coding Rehab?
 ---
 
 For the past six months we have been working with `Clojure` and the results are quite positive.
 
 However when we started it felt like re-learning habits and patterns that we thought we have mastered in `Java` and `C#`.
 
+In this, our first episode, we talk about our motivations to create a new podcast and share our experience working with functional languages.
+
 <iframe width="100%" height="166" scrolling="no" frameborder="no" src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/314465740&amp;color=ff5500&amp;auto_play=false&amp;hide_related=false&amp;show_comments=true&amp;show_user=true&amp;show_reposts=false"></iframe>
 
 <!--more-->
 
 
-
-We started to work with `Clojure` six months ago and it has been a very positive experience for our team.
 
 
