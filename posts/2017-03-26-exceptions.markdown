@@ -1,16 +1,12 @@
 ---
 title: Error handling and Exceptions
+summary: In this episode we discuss how to communicate errors and how exceptions can be an anti pattern if not used carefully.
+soundcloud: 314465945
 ---
 
-Error handling is a key part of any application. 
-
-In the current episode we discuss how to communicate errors and how `Exceptions` can be an _anti pattern_ if not used carefully.
-
-<iframe width="100%" height="166" scrolling="no" frameborder="no" src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/314465945&amp;color=ff5500&amp;auto_play=false&amp;hide_related=false&amp;show_comments=true&amp;show_user=true&amp;show_reposts=false"></iframe>
-
-<!--more-->
-
 ### Exceptions should be exceptional
+
+Error handling is a key part of any application. 
 
 One of the curious facts we noticed working with `Clojure` is that we hardly write any exceptions.
 
