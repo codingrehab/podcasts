@@ -1,25 +1,32 @@
 --------------------------------------------------------------------------------
 {-# LANGUAGE OverloadedStrings #-}
-import           Data.Monoid (mappend)
-import           Hakyll
+
+import Control.Monad (liftM)
+import Data.Monoid (mappend)
+import Hakyll
 
 
 --------------------------------------------------------------------------------
 main :: IO ()
 main = hakyll $ do
     match "images/*" $ do
-        route   idRoute
-        compile copyFileCompiler
+      route   idRoute
+      compile copyFileCompiler
 
+    -- match "css/*.hs" $ do
+    --   route   $ setExtension "css"
+    --   compile $ getResourceString >>= withItemBody (unixFilter "runghc" [])
+    --   
     match "css/*" $ do
-        route   idRoute
-        compile compressCssCompiler
+      route   idRoute
+      compile compressCssCompiler
 
     match (fromList ["about.rst", "contact.markdown"]) $ do
         route   $ setExtension "html"
-        compile $ pandocCompiler
-            >>= loadAndApplyTemplate "templates/default.html" defaultContext
-            >>= relativizeUrls
+        compile $ 
+          pandocCompiler
+          >>= loadAndApplyTemplate "templates/default.html" defaultContext
+          >>= relativizeUrls
 
     match "posts/*" $ do
         route $ setExtension "html"
@@ -40,9 +47,9 @@ main = hakyll $ do
                     defaultContext
 
             makeItem ""
-                >>= loadAndApplyTemplate "templates/archive.html" archiveCtx
-                >>= loadAndApplyTemplate "templates/default.html" archiveCtx
-                >>= relativizeUrls
+              >>= loadAndApplyTemplate "templates/archive.html" archiveCtx
+              >>= loadAndApplyTemplate "templates/default.html" archiveCtx
+              >>= relativizeUrls
 
 
     match "index.html" $ do
