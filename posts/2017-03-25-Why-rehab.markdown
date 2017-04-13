@@ -1,5 +1,5 @@
 ---
-title: Why Coding Rehab?
+title: who-needs-coding-rehab?
 summary: In this, our first episode, we talk about our motivations to create a new podcast and share our experience working with functional languages.
 soundcloud: 314465740
 ---

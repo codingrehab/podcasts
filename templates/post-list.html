@@ -1,10 +1,15 @@
-<ul>
+<ul class="podcasts">
   $for(posts)$
-    <li>
-      <a href="$url$">$title$</a> - $date$
-      <p> $summary$</p>
-      <iframe width="100%" height="300" scrolling="no" frameborder="no" 
-              src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/$soundcloud$&amp;auto_play=false&amp;hide_related=false&amp;show_comments=true&amp;show_user=true&amp;show_reposts=false&amp;visual=true"></iframe>
+    <li class="podcast">
+      <header>
+        <a href="$url$" class="title">$title$</a> 
+        <span class="date">$date$</span>
+      </header>
+      <article>
+        <span class="summary">$summary$</span>
+        <iframe scrolling="no" frameborder="no" 
+                src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/$soundcloud$&amp;auto_play=false&amp;hide_related=false&amp;show_comments=true&amp;show_user=true&amp;show_reposts=false&amp;"></iframe>
+      </article>
     </li>
   $endfor$
 </ul>

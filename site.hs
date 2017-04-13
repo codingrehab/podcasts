@@ -17,7 +17,7 @@ main = hakyll $ do
     --   route   $ setExtension "css"
     --   compile $ getResourceString >>= withItemBody (unixFilter "runghc" [])
     --   
-    match "css/*" $ do
+    match "css/*.css" $ do
       route   idRoute
       compile compressCssCompiler
 

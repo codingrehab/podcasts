@@ -1,5 +1,5 @@
 ---
-title: Error handling and Exceptions
+title: error-handling-and-exceptions
 summary: In this episode we discuss how to communicate errors and how exceptions can be an anti pattern if not used carefully.
 soundcloud: 314465945
 ---
