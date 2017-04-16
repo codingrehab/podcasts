@@ -68,6 +68,9 @@ defaultStylesheet = do
         ".social-icons" ? do
           float floatRight
 
+          ".fa" ? do
+            color white
+
       ".bio" ? do
         sym padding (px 5)
         display flex
@@ -82,8 +85,10 @@ defaultStylesheet = do
         "img" ? do
           width (pct 20)
           height (pct 20)
-          sym borderRadius (px 15)
+          sym borderRadius (pct 100)
           flexGrow 1
+          Clay.filter $ grayscale (pct 100)
+          sym padding (px 10)
 
     ".podcasts" ? do
       listStyleType none
