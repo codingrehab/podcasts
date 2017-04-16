@@ -49,7 +49,42 @@ defaultStylesheet = do
     img ? do
       width (pct 100)
 
+  ".social-media-logo" ? do
+    width (px 32)
+
   ".content" ? do
+    ".about-person" ? do
+      border solid (px 2) blueHighlight
+      marginBottom (px 20)
+
+      ".header" ? do
+        sym padding (px 10)
+        background blueHighlight
+        color white
+        marginBottom (px 5)
+        fontSize (Clay.rem 1.3)
+        fontFamily ["Anonymous Pro"] [monospace]
+
+        ".social-icons" ? do
+          float floatRight
+
+      ".bio" ? do
+        sym padding (px 5)
+        display flex
+
+        ".text" ? do
+          flexGrow 2
+
+        p ? do
+          sym margin (px 0)
+          lineHeight (Clay.rem 1.5)
+
+        "img" ? do
+          width (pct 20)
+          height (pct 20)
+          sym borderRadius (px 15)
+          flexGrow 1
+
     ".podcasts" ? do
       listStyleType none
       sym padding (px 0)
