@@ -5,6 +5,7 @@ import Clay.Border
 import Clay.Text
 import Clay.Display
 import Prelude hiding (div, span)
+import qualified Clay.Media as Mq
 
 main :: IO ()
 main = putCss defaultStylesheet 
@@ -12,6 +13,9 @@ main = putCss defaultStylesheet
 blueHighlight = "#1081a8"
 
 containerWidth = 1024
+
+-- wide   = query Mq.all [Mq.minWidth 414]
+-- narrow = query Mq.all [Mq.maxWidth 414]
 
 defaultStylesheet :: Css
 defaultStylesheet = do
@@ -74,21 +78,28 @@ defaultStylesheet = do
       ".bio" ? do
         sym padding (px 5)
         display flex
+        -- flexWrap (FlexWrap wrap)
+        justifyContent spaceBetween
 
         ".text" ? do
-          flexGrow 2
+          width (pct 75)
 
         p ? do
           sym margin (px 0)
           lineHeight (Clay.rem 1.5)
+          marginBottom (px 10)
 
-        "img" ? do
-          width (pct 20)
-          height (pct 20)
-          sym borderRadius (pct 100)
-          flexGrow 1
-          Clay.filter $ grayscale (pct 100)
-          sym padding (px 10)
+        ".img_container" ? do
+          width (pct 30)
+          textAlign center
+          minWidth (px 200)
+          marginRight (px 10)
+
+          "img" ? do
+            width (px 200)
+            sym borderRadius (pct 100)
+            Clay.filter $ grayscale (pct 100)
+            -- sym padding (px 10)
 
     ".podcasts" ? do
       listStyleType none
