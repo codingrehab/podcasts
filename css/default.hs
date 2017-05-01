@@ -12,6 +12,9 @@ main = putCss defaultStylesheet
 
 blueHighlight = "#1081a8"
 
+orangy = rgb 255 80 10
+
+
 containerWidth = 1024
 
 -- wide   = query Mq.all [Mq.minWidth 414]
@@ -22,6 +25,9 @@ defaultStylesheet = do
   body ? do
     color black
     fontSize (px 16)
+
+  p ? do
+    lineHeight (Clay.rem 1.3)
 
   ".inner" ? do
     width (pct 80)
@@ -133,6 +139,15 @@ defaultStylesheet = do
             flexGrow 1
             width (pct 50)
             fontSize (Clay.rem 1.1)
+
+            ".read-post" ? do
+              marginTop (px 20)
+              a ? do
+                sym padding (px 10)
+                background orangy
+                color white
+                textDecoration none
+                sym borderRadius (px 3)
 
           iframe ? do
             flexGrow 1

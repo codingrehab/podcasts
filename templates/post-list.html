@@ -2,11 +2,16 @@
   $for(posts)$
     <li class="podcast">
       <header>
-        <a href="$url$" class="title">$title$</a> 
+        <span class="title">$title$</span> 
         <span class="date">$date$</span>
       </header>
       <article>
-        <span class="summary">$summary$</span>
+        <div class="summary">
+          $summary$
+          <div class="read-post">
+            <a href="$url$">Read the companion blog post</a>
+          </div>
+        </div>
         <iframe scrolling="no" frameborder="no" 
                 src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/$soundcloud$&amp;auto_play=false&amp;hide_related=false&amp;show_comments=true&amp;show_user=true&amp;show_reposts=false&amp;"></iframe>
       </article>
