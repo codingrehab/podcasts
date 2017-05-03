@@ -6,7 +6,21 @@ soundcloud: 314465740
 
 For the past six months we have been working with `Clojure` and the results are quite positive.
 
-However when we started it felt like re-learning habits and patterns that we thought we have mastered in `Java` and `C#`.
+When we started it felt like re-learning habits and patterns that we thought we have mastered in `Java` and `C#`.
+
+But soon enough we had our first application in production with a fraction of the effort that would have taken in `Java` and way more enjoyment.
+
+We changed many habits that we had from procedural programming and we are learning new idioms every day not only from Clojure but also other functional languages like Haskell.
+
+Seeing our positive was for us we decided that sharing our experience could benefit other developers, and inspire them to look into new technologies and functional languages.
+
+In other words _coding rehab_.
+
+We decided to record short podcasts (20 min or so) so they can be listened to while commuting (for example) from start to end.
+
+Also each podcast will have a companion blog post to show examples and illustrate some of the concepts discussed.
+
+We hope you like it!
 
 
 

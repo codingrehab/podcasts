@@ -21,7 +21,7 @@ The signature of `parseInt` expresses clearly that it may fail by throwing a `Nu
 
 So either we need to catch the exception and see if we can do something about it, or perhaps we could just let the exception bubble up to the next `catch`.
 
-Beign honest though, we do not want to let a `NumberFormatException` escape from our function because it has meaning in the function context but not outside.
+Being honest though, we do not want to let a `NumberFormatException` escape from our function because is meaningful to the function context but not outside.
 
 We can not avoid dealing with the exception. Maybe we could return a new type that is a bit more helpful, like perhaps a `Maybe<int>` or `PossibleResult<int>` instance that would help us take a decision without involving `try` and `catch`.
 
@@ -29,11 +29,11 @@ Wait... why not `null`? Well, here's why: [Tony Hoare - The billion dollar mista
 
 ## The _Optional_ value
 
-In Java 8 a new class was introduced to capture smilar scenarios.
+In Java 8 a new class was introduced to capture similar scenarios.
 
 The [`Optional<T>`](https://docs.oracle.com/javase/8/docs/api/java/util/Optional.html) represents a value that may or may not be there. It has functions like `map` that help to transform the possible result if present. Another useful function is `orElse` to obtain the value or provide an alternative. 
 
-With that in mind `parseInt` could change to
+With that in mind, `parseInt` could change to
 
 ``` java
 public static Optional<Integer> parseInt(String s)
@@ -51,7 +51,7 @@ In _Clojure_ is not idiomatic to use an `Optional` class, nor a `Maybe` type lik
 
 However, there is a value chosen to represent `Nothing` and that value is `nil`.
 
-The differece is that the `and` and `or` functions know how to work with it.
+The difference is that the `and` and `or` functions know how to work with it.
 
 ``` clojure
 (defn get-port-number 
@@ -63,14 +63,14 @@ The differece is that the `and` and `or` functions know how to work with it.
 
 Use exceptions when an unexpected event happens that there is not coming back from it.
 
-Run out of memory, main file not found, network unreachable, etc.
+_Run out of memory_, _file not found_, _network unreachable_, etc.
 
 Every function/method we write is establishing a contract with the user. If failure is a possible result then we should reflect that in the return type.
 
-For example calling an HTTP API always can fail. In `Clojure` we can return a map with different keywords that represent the result.
+For example calling an HTTP API always can fail. In `Clojure` we can return a map with different keywords that represents the result.
 
 When the call succeeds, then the `:body` keyword will be there, and when the call failed, an `:error` keyword will indicate what is the error.
 
-Similar to Haskell's [Either](https://hackage.haskell.org/package/base-4.9.1.0/docs/Data-Either.html) data type in Java we have to be a bit more creative and have a class that represent success or failure.
+Similar to Haskell's [Either](https://hackage.haskell.org/package/base-4.9.1.0/docs/Data-Either.html) data type in Java we have to be a bit more creative and have a class that represents success or failure.
 
 
