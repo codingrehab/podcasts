@@ -1,0 +1,48 @@
+@media (max-width: 700px) {
+  .podcast {
+    header {
+      .title { display: block; }
+      .date  { 
+        float: none !important;
+        display: block;
+        text-align: right;
+        margin-top:10px;
+      }
+    }
+
+    article {
+      .summary {
+        width: auto !important;
+        margin-bottom: 20px;
+      }
+    }
+  }
+
+  .about-person {
+    .bio {
+      display: block !important;
+      .img_container {
+        width: auto !important;
+        margin: 0 auto 20px;
+      }
+      .text {
+        width:auto !important;
+      }
+    }
+  }
+}
+
+@media (max-width: 736px) {
+  .inner {
+    width: 90%;
+  }
+}
+
+@media(max-width: 424px) {
+  .social-icons  { 
+    float: none !important;
+    display: block;
+    text-align: right;
+    margin-top:15px;
+  }
+}
