@@ -5,7 +5,6 @@ import Control.Monad (liftM)
 import Data.Monoid (mappend)
 import Hakyll
 
-
 --------------------------------------------------------------------------------
 main :: IO ()
 main = hakyll $ do
@@ -16,7 +15,11 @@ main = hakyll $ do
     -- match "css/*.hs" $ do
     --   route   $ setExtension "css"
     --   compile $ getResourceString >>= withItemBody (unixFilter "runghc" [])
-    --   
+
+    -- match "css/*.scss" $ do
+    --   route   $ setExtension "css"
+    --   compile compressScssCompiler
+
     match "css/*.css" $ do
       route   idRoute
       compile compressCssCompiler
@@ -78,3 +81,16 @@ postCtx :: Context String
 postCtx =
     dateField "date" "%B %e, %Y" `mappend`
     defaultContext
+
+-- | Create a SCSS compiler that transpiles the SCSS to CSS and
+-- minifies it (relying on the external 'sass' tool)
+compressScssCompiler :: Compiler (Item String)
+compressScssCompiler = do
+  fmap (fmap compressCss) $
+    getResourceString
+    >>= withItemBody (unixFilter "sass" [ "-s"
+                                        , "--scss"
+                                        , "--compass"
+                                        , "--style", "compressed"
+                                        , "--load-path", "scss"
+                                        ])
