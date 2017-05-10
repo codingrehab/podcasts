@@ -24,7 +24,7 @@ defaultStylesheet :: Css
 defaultStylesheet = do
   body ? do
     color black
-    fontSize (px 16)
+    fontSize (Clay.rem 1.2)
 
   p ? do
     lineHeight (Clay.rem 1.3)
