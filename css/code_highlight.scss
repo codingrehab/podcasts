@@ -9,6 +9,19 @@ p code {
   background: transparent;
 }
 
+li code {
+  font-family: 'Anonymous Pro', monospace !important;
+  font-size: .9em;
+  padding: 0 3px !important;
+  color: darken(deeppink, 20%);
+  background: transparent;
+}
+
+pre.klipse {
+  padding: 10px;
+  background: aliceblue;
+}
+
 .sourceCode {
   font-family: 'Anonymous Pro', monospace !important;
   font-size: .9em;

@@ -8,7 +8,8 @@
     <link rel="stylesheet" href="/css/default.css" />
     <link rel="stylesheet" href="/css/code_highlight.css" />
     <link rel="stylesheet" href="/css/custom.css" />
-    <link href="https://fonts.googleapis.com/css?family=Anonymous+Pro" rel="stylesheet">
+    <link rel="stylesheet" ref="https://fonts.googleapis.com/css?family=Anonymous+Pro">
+    <link rel="stylesheet" type="text/css" href="https://storage.googleapis.com/app.klipse.tech/css/codemirror.css">
     <script src="https://use.fontawesome.com/cdd971d72d.js"></script>
   </head>
   <body>
@@ -37,5 +38,12 @@
         <a href="http://jaspervdj.be/hakyll">Hakyll</a>
       </div>
     </footer>
+    <script>
+      window.klipse_settings = {
+        // selector_eval_js: '.language-klipse', // css selector for the html elements you want to klipsify
+        selector: '.eval-clojure'
+      };
+    </script> 
+    <script src="https://storage.googleapis.com/app.klipse.tech/plugin/js/klipse_plugin.js"></script>
   </body>
 </html>

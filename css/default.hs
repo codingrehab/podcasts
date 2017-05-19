@@ -27,7 +27,7 @@ defaultStylesheet = do
     fontSize (Clay.rem 1.2)
 
   p ? do
-    lineHeight (Clay.rem 1.3)
+    lineHeight (Clay.rem 1.4)
 
   ".inner" ? do
     width (pct 80)
