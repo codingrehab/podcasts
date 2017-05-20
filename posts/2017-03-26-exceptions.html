@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>error-handling-and-exceptions</title>
+    <link rel="stylesheet" href="../css/default.css" />
+    <link rel="stylesheet" href="../css/code_highlight.css" />
+    <link rel="stylesheet" href="../css/custom.css" />
+    <link rel="stylesheet" ref="https://fonts.googleapis.com/css?family=Anonymous+Pro">
+    <link rel="stylesheet" type="text/css" href="https://storage.googleapis.com/app.klipse.tech/css/codemirror.css">
+    <script src="https://use.fontawesome.com/cdd971d72d.js"></script>
+  </head>
+  <body>
+    <header>
+      <div class="inner">
+        <div class="logo">
+          <a href="../"><img src="../images/coding-rehab-logo.png" alt="Coding Rehab" /></a>
+        </div>
+        <div class="navigation">
+          <a href="../">Home</a>
+          <a href="../about.html">About</a>
+          <a href="../archive.html">Archive</a>
+        </div>
+      </div>
+    </header>
+
+    <div class="content">
+      <div class="inner">
+        <div class="info">
+    Posted on March 26, 2017
+    
+    by <a href="../about">Amir Barylko</a>
+    
+</div>
+
+<h3 id="exceptions-should-be-exceptional">Exceptions should be exceptional</h3>
+<p>Error handling is a key part of any application.</p>
+<p>However, using exceptions instead of a return type to express a function call can fail can be a bit confusing.</p>
+<p>For example let’s take a look at <code>java.lang.Integer.parseInt</code></p>
+<div class="sourceCode"><pre class="sourceCode java"><code class="sourceCode java"><span class="kw">public</span> <span class="dt">static</span> <span class="dt">int</span> <span class="fu">parseInt</span>(<span class="bu">String</span> s) <span class="kw">throws</span> <span class="bu">NumberFormatException</span></code></pre></div>
+<p>The signature of <code>parseInt</code> expresses clearly that it may fail by throwing a <code>NumberFormatException</code>.</p>
+<p>So either we need to catch the exception and see if we can do something about it, or perhaps we could just let the exception bubble up to the next <code>catch</code>.</p>
+<p>Being honest though, we do not want to let a <code>NumberFormatException</code> escape from our function because is meaningful to the function context but not outside.</p>
+<p>We can not avoid dealing with the exception. Maybe we could return a new type that is a bit more helpful, like perhaps a <code>Maybe&lt;int&gt;</code> or <code>PossibleResult&lt;int&gt;</code> instance that would help us take a decision without involving <code>try</code> and <code>catch</code>.</p>
+<p>Wait… why not <code>null</code>? Well, here’s why: <a href="http://www.infoq.com/presentations/Null-References-The-Billion-Dollar-Mistake-Tony-Hoare">Tony Hoare - The billion dollar mistake</a>.</p>
+<h2 id="the-optional-value">The <em>Optional</em> value</h2>
+<p>In Java 8 a new class was introduced to capture similar scenarios.</p>
+<p>The <a href="https://docs.oracle.com/javase/8/docs/api/java/util/Optional.html"><code>Optional&lt;T&gt;</code></a> represents a value that may or may not be there. It has functions like <code>map</code> that help to transform the possible result if present. Another useful function is <code>orElse</code> to obtain the value or provide an alternative.</p>
+<p>With that in mind, <code>parseInt</code> could change to</p>
+<div class="sourceCode"><pre class="sourceCode java"><code class="sourceCode java"><span class="kw">public</span> <span class="dt">static</span> Optional&lt;<span class="bu">Integer</span>&gt; <span class="fu">parseInt</span>(<span class="bu">String</span> s)</code></pre></div>
+<p>And we could use it to decide what to do in case it fails by chaining functions</p>
+<div class="sourceCode"><pre class="sourceCode java"><code class="sourceCode java"><span class="kw">public</span> <span class="bu">Integer</span> <span class="fu">getPortNumber</span>(<span class="bu">String</span> strPort) {
+  <span class="kw">return</span> <span class="fu">parseInt</span>(strPort).<span class="fu">orElse</span>(<span class="dv">8080</span>);
+}</code></pre></div>
+<p>In <em>Clojure</em> is not idiomatic to use an <code>Optional</code> class, nor a <code>Maybe</code> type like <a href="http://learnyouahaskell.com/making-our-own-types-and-typeclasses">Haskell</a>.</p>
+<p>However, there is a value chosen to represent <code>Nothing</code> and that value is <code>nil</code>.</p>
+<p>The difference is that the <code>and</code> and <code>or</code> functions know how to work with it.</p>
+<div class="sourceCode"><pre class="sourceCode clojure"><code class="sourceCode clojure">(<span class="bu">defn</span><span class="fu"> get-port-number </span>
+  [str-port]
+  (<span class="kw">or</span> (parse-int str-port) <span class="dv">8080</span>))</code></pre></div>
+<h2 id="a-guideline-to-consider">A guideline to consider</h2>
+<p>Use exceptions when an unexpected event happens that there is not coming back from it.</p>
+<p><em>Run out of memory</em>, <em>file not found</em>, <em>network unreachable</em>, etc.</p>
+<p>Every function/method we write is establishing a contract with the user. If failure is a possible result then we should reflect that in the return type.</p>
+<p>For example calling an HTTP API always can fail. In <code>Clojure</code> we can return a map with different keywords that represents the result.</p>
+<p>When the call succeeds, then the <code>:body</code> keyword will be there, and when the call failed, an <code>:error</code> keyword will indicate what is the error.</p>
+<p>Similar to Haskell’s <a href="https://hackage.haskell.org/package/base-4.9.1.0/docs/Data-Either.html">Either</a> data type in Java we have to be a bit more creative and have a class that represents success or failure.</p>
+
+      </div>
+    </div>
+
+    <footer>
+      <div class="inner">
+        Site proudly generated by
+        <a href="http://jaspervdj.be/hakyll">Hakyll</a>
+      </div>
+    </footer>
+    <script>
+      window.klipse_settings = {
+        // selector_eval_js: '.language-klipse', // css selector for the html elements you want to klipsify
+        selector: '.eval-clojure'
+      };
+    </script> 
+    <script src="https://storage.googleapis.com/app.klipse.tech/plugin/js/klipse_plugin.js"></script>
+  </body>
+</html>

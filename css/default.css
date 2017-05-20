@@ -1,0 +1,221 @@
+
+body
+{
+  color     : #000000;
+  font-size : 1.19999rem;
+}
+
+p
+{
+  line-height : 1.39999rem;
+}
+
+.inner
+{
+  width     : 80%;
+  max-width : 1024px;
+  margin    : 0px auto 0px auto;
+}
+
+header
+{
+  border-bottom : solid 2px #1081a8;
+  margin-bottom : 30px;
+  padding       : 12px 0px 12px 0px;
+}
+
+header .navigation
+{
+  text-align : right;
+}
+
+header .navigation a
+{
+  color           : #000000;
+  font-size       : 18px;
+  font-weight     : bold;
+  margin-left     : 12px;
+  text-decoration : none;
+  text-transform  : uppercase;
+}
+
+.logo > a
+{
+  color           : #000000;
+  font-size       : 18px;
+  font-weight     : bold;
+  text-decoration : none;
+}
+
+.logo > a img
+{
+  width : 100%;
+}
+
+.social-media-logo
+{
+  width : 32px;
+}
+
+
+.content .about-person
+{
+  border        : solid 2px #1081a8;
+  margin-bottom : 20px;
+}
+
+.content .about-person .header
+{
+  padding       : 10px 10px 10px 10px;
+  background    : #1081a8;
+  color         : #ffffff;
+  margin-bottom : 5px;
+  font-size     : 1.3rem;
+  font-family   : "Anonymous Pro", monospace;
+}
+
+.content .about-person .header .social-icons
+{
+  float : right;
+}
+
+.content .about-person .header .social-icons .fa
+{
+  color : #ffffff;
+}
+
+.content .about-person .bio
+{
+  padding         : 5px 5px 5px 5px;
+  display         : flex;
+  justify-content : space-between;
+}
+
+.content .about-person .bio .text
+{
+  width : 75%;
+}
+
+.content .about-person .bio p
+{
+  margin        : 0px 0px 0px 0px;
+  line-height   : 1.5rem;
+  margin-bottom : 10px;
+}
+
+.content .about-person .bio .img_container
+{
+  width        : 30%;
+  text-align   : center;
+  min-width    : 200px;
+  margin-right : 10px;
+}
+
+.content .about-person .bio .img_container img
+{
+  width          : 200px;
+  border-radius  : 100% 100% 100% 100%;
+  -webkit-filter : grayscale(100%);
+  -moz-filter    : grayscale(100%);
+  -ms-filter     : grayscale(100%);
+  -o-filter      : grayscale(100%);
+  filter         : grayscale(100%);
+}
+
+.content .podcasts
+{
+  list-style-type : none;
+  padding         : 0px 0px 0px 0px;
+}
+
+.content .podcasts .podcast
+{
+  border        : solid 2px #1081a8;
+  margin-bottom : 20px;
+}
+
+.content .podcasts .podcast header
+{
+  padding       : 10px 10px 10px 10px;
+  background    : #1081a8;
+  color         : #ffffff;
+  margin-bottom : 5px;
+  font-size     : 1.3rem;
+  font-family   : "Anonymous Pro", monospace;
+}
+
+.content .podcasts .podcast header a
+{
+  color : #ffffff;
+}
+
+.content .podcasts .podcast header .date
+{
+  float : right;
+}
+
+.content .podcasts .podcast article
+{
+  padding         : 10px 10px 10px 10px;
+  display         : flex;
+  flex-flow       : row wrap;
+  justify-content : space-around;
+}
+
+.content .podcasts .podcast article .summary
+{
+  flex-grow : 1;
+  width     : 50%;
+  font-size : 1.1rem;
+}
+
+.content .podcasts .podcast article .summary .read-post
+{
+  margin-top : 20px;
+}
+
+.content .podcasts .podcast article .summary .read-post a
+{
+  padding         : 10px 10px 10px 10px;
+  background      : #ff500a;
+  color           : #ffffff;
+  text-decoration : none;
+  border-radius   : 3px 3px 3px 3px;
+}
+
+.content .podcasts .podcast article iframe
+{
+  flex-grow : 1;
+  height    : auto;
+  width     : 50%;
+}
+
+footer
+{
+  border-top : solid 2px #1081a8;
+  color      : #555555;
+  font-size  : 12px;
+  margin-top : 30px;
+  padding    : 12px 0px 12px 0px;
+  text-align : right;
+}
+
+h1
+{
+  font-size : 24px;
+}
+
+h2
+{
+  font-size : 20px;
+}
+
+div.info
+{
+  color      : #555555;
+  font-size  : 14px;
+  font-style : italic;
+}
+
+
+/* Generated with Clay, http://fvisser.nl/clay */

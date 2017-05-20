@@ -1,0 +1,148 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>generative-testing</title>
+    <link rel="stylesheet" href="../css/default.css" />
+    <link rel="stylesheet" href="../css/code_highlight.css" />
+    <link rel="stylesheet" href="../css/custom.css" />
+    <link rel="stylesheet" ref="https://fonts.googleapis.com/css?family=Anonymous+Pro">
+    <link rel="stylesheet" type="text/css" href="https://storage.googleapis.com/app.klipse.tech/css/codemirror.css">
+    <script src="https://use.fontawesome.com/cdd971d72d.js"></script>
+  </head>
+  <body>
+    <header>
+      <div class="inner">
+        <div class="logo">
+          <a href="../"><img src="../images/coding-rehab-logo.png" alt="Coding Rehab" /></a>
+        </div>
+        <div class="navigation">
+          <a href="../">Home</a>
+          <a href="../about.html">About</a>
+          <a href="../archive.html">Archive</a>
+        </div>
+      </div>
+    </header>
+
+    <div class="content">
+      <div class="inner">
+        <div class="info">
+    Posted on April 24, 2017
+    
+    by <a href="../about">Amir Barylko</a>
+    
+</div>
+
+<h2 id="how-many-testing-scenarios-is-enough">How many testing scenarios is enough?</h2>
+<p>Identifying scenarios when working on a feature help us write tests to ensure the feature works as expected. Once the test for each scenario passes then the whole feature is implemented correctly.</p>
+<p>Each scenario brings a <em>domain</em> of possible input values that make the test behave in a certain way.</p>
+<p>For example, lets consider the function <code>positive?</code> that returns <code>true</code> if the parameter passed is greater than zero and <code>false</code> otherwise.</p>
+<div class="sourceCode"><pre class="sourceCode clojure"><code class="sourceCode clojure">(<span class="bu">defn</span><span class="fu"> positive</span>? [n] .... )</code></pre></div>
+<p>The <strong>domain</strong> in this case are all the numbers. There is two clear scenarios to test:</p>
+<ol style="list-style-type: decimal">
+<li>The parameter is <strong>greater than zero</strong>, in which case it should return <code>true</code>.</li>
+<li>The parameter is <strong>equal or less than zero</strong>, in which case it should return <code>false</code>.</li>
+</ol>
+<p>How to decide which values we should use to test? What is the minimum value to use or the maximum value to use? Hard to tell…</p>
+<p>We can come up with a few numbers… but seems a bit fragile (and silly).</p>
+<h2 id="properties-testing">Properties testing</h2>
+<p>Instead of choosing a few numbers to test let’s use instead a function that will generate random values from the specific domain for each scenario.</p>
+<p>To do that we are going to use the <a href="https://github.com/clojure/test.check">test.check</a> library.</p>
+<p>Inspired by <a href="https://hackage.haskell.org/package/QuickCheck">QuickCheck</a> the <code>test.check</code> library has several functions called <em>generators</em> that represent the <em>base</em> creators of possible input values.</p>
+<pre class="klipse"><code class="eval-clojure" data-external-libs="https://raw.githubusercontent.com/clojure/test.check/master/src/main/clojure/clojure/test/check.cljc" data-loop-msec="2000">
+(require '[clojure.test.check.generators :as gen])
+
+;; Generates int values
+(gen/sample gen/int)
+</code></pre>
+<p>Having two very clear scenarios makes easy to identify two <em>properties</em> to test:</p>
+<ol style="list-style-type: decimal">
+<li>For every number that is greater than zero, <code>positive?</code> should return <code>true</code>.</li>
+<li>For every number that is less or equal than zero, <code>positive?</code> should return <code>false</code>.</li>
+</ol>
+<p>With that in mind, let’s create two generators.</p>
+<p>For positive numbers:</p>
+<pre class="klipse"><code class="eval-clojure">
+(def pos-num-gen (gen/such-that #(> % 0) gen/int))
+
+(gen/sample pos-num-gen)
+</code></pre>
+<p>For zero and negative numbers:</p>
+<pre class="klipse"><code class="eval-clojure">
+(def neg-num-gen (gen/such-that #(<= % 0) gen/int))
+
+(gen/sample neg-num-gen)
+</code></pre>
+<p>And having the generators ready, we can write the properties and verify them.</p>
+<pre class="klipse"><code class="eval-clojure">
+(require '[clojure.test.check :as tc])
+(require '[clojure.test.check.properties :as prop :include-macros true])
+
+(defn positive? [n] (> n 0))
+
+(def all-numbers-greater-than-zero-are-positive
+  (prop/for-all [n pos-num-gen] (positive? n)))
+
+(tc/quick-check 100 all-numbers-greater-than-zero-are-positive)
+</code></pre>
+<p>And the second property:</p>
+<pre class="klipse"><code class="eval-clojure">
+(def all-numbers-less-or-equal-than-zero-are-not-positive
+  (prop/for-all [n neg-num-gen] (not (positive? n))))
+
+(tc/quick-check 100 all-numbers-less-or-equal-than-zero-are-not-positive)
+</code></pre>
+<h2 id="what-about-the-real-world">What about the “real world”?</h2>
+<p>Thinking in terms of properties frees us from focusing on each test case and broaden our view towards describing what is the <em>precondition</em> and <em>postcondition</em> of the function.</p>
+<p>But how can we use this technique for real world scenarios? No every function will be as easy to find properties as <code>positive?</code>.</p>
+<p>No, of course not.</p>
+<p>The <strong>test.check</strong> library provides ways to combine the generators in order to create more complex ones.</p>
+<p>We saw a hint by using the <code>such-that</code> function to filter the generated values by applying a predicate.</p>
+<p>Another very useful function is <code>fmap</code> that transforms the generated values to match the domain we need.</p>
+<p>To illustrate the point let’s use <a href="https://github.com/plumatic/schema">plumatic.schema</a> to build a bank account representation.</p>
+<div class="sourceCode"><pre class="sourceCode clojure"><code class="sourceCode clojure">(<span class="kw">require</span> '[schema.core <span class="at">:as</span> s])
+
+(<span class="bu">def</span><span class="fu"> BankAccount</span>
+  {<span class="at">:first-name</span> s/Str
+   <span class="at">:last-name</span>  s/Str
+   <span class="at">:source</span>     (s/Enum <span class="st">&quot;South&quot;</span>, <span class="st">&quot;North&quot;</span>)
+   <span class="at">:balance</span>    pos-int})</code></pre></div>
+<p>Using the <a href="https://github.com/plumatic/schema-generators">schema generators</a> library let’s create a basic generator, and also a generator that returns only accounts from the <em>South</em>.</p>
+<div class="sourceCode"><pre class="sourceCode clojure"><code class="sourceCode clojure">(<span class="kw">require</span> '[schema-generators.generators <span class="at">:as</span> sgen])
+
+(<span class="bu">def</span><span class="fu"> basic-account-gen </span>(sgen/generator BankAccount))
+
+(<span class="bu">def</span><span class="fu"> south-balance-gen </span>(fmap #(<span class="kw">-&gt;</span> % (<span class="kw">assoc</span> <span class="at">:source</span> <span class="st">&quot;South&quot;</span>)) basic-account-gen))</code></pre></div>
+<p>And thus we can test it:</p>
+<div class="sourceCode"><pre class="sourceCode clojure"><code class="sourceCode clojure">(<span class="bu">def</span><span class="fu"> all-accounts-from-the-south-are-processed-with-interest</span>
+  (prop/for-all [account south-balance-gen] 
+                (<span class="kw">=</span> some-value-with-interest-here (process-account account))))
+
+(tc/quick-check <span class="dv">100</span> all-accounts-from-the-south-are-processed-with-interest)</code></pre></div>
+<h2 id="but-random-values-may-fail-randomly">But random values may fail randomly</h2>
+<p>Actually not. That’s a misconception.</p>
+<p>We choose the input values carefully to ensure that every element genereted belongs to the domain. Is true that we do not care which values are selected, but they are all from the same domain (for example <em>all positive numbers</em>).</p>
+<p>Why is so much better? Because the focus on the properties simplifies searching for scenarios and helps us to avoid relying too much in the implementation.</p>
+<p>Having said that, finding properties to test is not always easy, and some times we can combine both approaches. Some scenarios are easier to test with generative testing and some using a case by case methodology.</p>
+<p>Similar libraries can be found in other languages like Scala, F# and Elixir.</p>
+
+      </div>
+    </div>
+
+    <footer>
+      <div class="inner">
+        Site proudly generated by
+        <a href="http://jaspervdj.be/hakyll">Hakyll</a>
+      </div>
+    </footer>
+    <script>
+      window.klipse_settings = {
+        // selector_eval_js: '.language-klipse', // css selector for the html elements you want to klipsify
+        selector: '.eval-clojure'
+      };
+    </script> 
+    <script src="https://storage.googleapis.com/app.klipse.tech/plugin/js/klipse_plugin.js"></script>
+  </body>
+</html>

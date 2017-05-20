@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>streams</title>
+    <link rel="stylesheet" href="../css/default.css" />
+    <link rel="stylesheet" href="../css/code_highlight.css" />
+    <link rel="stylesheet" href="../css/custom.css" />
+    <link href="https://fonts.googleapis.com/css?family=Anonymous+Pro" rel="stylesheet">
+    <script src="https://use.fontawesome.com/cdd971d72d.js"></script>
+  </head>
+  <body>
+    <header>
+      <div class="inner">
+        <div class="logo">
+          <a href="../"><img src="../images/coding-rehab-logo.png" alt="Coding Rehab" /></a>
+        </div>
+        <div class="navigation">
+          <a href="../">Home</a>
+          <a href="../about.html">About</a>
+          <a href="../archive.html">Archive</a>
+        </div>
+      </div>
+    </header>
+
+    <div class="content">
+      <div class="inner">
+        <div class="info">
+    Posted on April  1, 2017
+    
+    by <a href="../about">Dave Taylor</a>
+    
+</div>
+
+<h2 id="streams">Streams</h2>
+<p>In programming we attempt to model state with data structures. In many object oriented paradigms focus is narrowed towards state of a data structure at a specific point in time through objects and primitives. With streams that focus is shifted to the entire history of values, not specific changes. In short we stress the pipeline and transformation of data from beginning to end. Thus, stream processing let’s us model state without side effects and requires the programmer to consider the whole life cycle of a system, often resulting in better code.</p>
+<p>A non stream approach (Java) to calculate primes requires the implementer to manage the state of primes lists while the stream approach (Clojure) does not.</p>
+<div class="sourceCode"><pre class="sourceCode java"><code class="sourceCode java"><span class="kw">for</span>(i = <span class="dv">2</span>, x = <span class="dv">2</span>; i &lt;= n; i++) {
+  <span class="kw">for</span>(x = <span class="dv">2</span>; x &lt; i; x++) {
+    <span class="kw">if</span>(i % x == <span class="dv">0</span>) {
+      <span class="kw">break</span>;
+    }
+  }
+
+  <span class="kw">if</span>(x == i) {
+    primeList.<span class="fu">add</span>(x)
+  }
+}</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode clojure"><code class="sourceCode clojure">(<span class="kw">filter</span> prime? (<span class="kw">iterate</span> <span class="kw">inc</span> <span class="dv">1</span>))</code></pre></div>
+<h2 id="streams-as-lists">Streams as lists</h2>
+<p><em>“As a data abstraction, streams are the same as list. The difference is the time at which the elements are evaluated”</em> - SICP</p>
+<p>A simple implementation of a stream is as a lists. Unfortunately, implementing a stream strictly as a list requires the full time and space complexity of a data structure throughout it’s life cycle. Remember, we are not interested in snapshots of data structures at a point in time, but rather its whole history. Intuitively, you can begin to understand the resources required.</p>
+<h2 id="demand-driven">Demand Driven</h2>
+<p><em>“If time is measured in discrete steps, then we can model a time function as a (possible infinite) sequence”</em> - SICP</p>
+<p>Efficiencies of processing via streams are realized through delayed evaluation. Programs can be written with powerful and succinct abstraction like map, filter and apply without incurring the resource costs of a list implementation. Resources are only allocated partially, and can require more as they are needed. This paradigm enables us to write code as if we are processing the complete history a data structure, without the overhead. We may also model sequences as if they are infinite while only having the limited resources. From the implementers perspective the Clojure function repeat creates a stream that will repeat forever, and the function take will grab from that infinite list. The complexity of managing these resources and the impossibility of providing them is completely hidden from the implementor.</p>
+<div class="sourceCode"><pre class="sourceCode clojure"><code class="sourceCode clojure">(<span class="kw">take</span> <span class="dv">100</span> (<span class="kw">repeat</span> <span class="st">&quot;Infinity&quot;</span>))</code></pre></div>
+<p>A non-cached fibonacci sequence (Java) using recursion requires the full time + space complexity of the sequence while the Clojure version using delayed evaluation does not. Streams benefit from the efficiency gains of delayed evaluation, without requiring the implementer to worry about them.</p>
+<div class="sourceCode"><pre class="sourceCode java"><code class="sourceCode java"><span class="kw">public</span> <span class="dt">static</span> <span class="dt">int</span> <span class="fu">fib</span>(<span class="dt">int</span> n) {
+  <span class="kw">if</span> (n &lt;= <span class="dv">2</span>) { 
+    <span class="kw">return</span> <span class="dv">1</span>;
+  } <span class="kw">else</span> {
+    <span class="kw">return</span> <span class="fu">fib</span>(n-<span class="dv">1</span>) + <span class="fu">fib</span>(n-<span class="dv">2</span>); 
+  }
+}</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode clojure"><code class="sourceCode clojure">(<span class="bu">def</span><span class="fu"> fib </span>(<span class="kw">map</span> <span class="kw">first</span> (<span class="kw">iterate</span> (<span class="kw">fn</span> [[a b]] [b (+' a b)]) [<span class="dv">0</span> <span class="dv">1</span>])))</code></pre></div>
+
+      </div>
+    </div>
+
+    <footer>
+      <div class="inner">
+        Site proudly generated by
+        <a href="http://jaspervdj.be/hakyll">Hakyll</a>
+      </div>
+    </footer>
+  </body>
+</html>
