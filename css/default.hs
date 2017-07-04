@@ -14,7 +14,6 @@ blueHighlight = "#1081a8"
 
 orangy = rgb 255 80 10
 
-
 containerWidth = 1024
 
 -- wide   = query Mq.all [Mq.minWidth 414]
@@ -173,4 +172,3 @@ defaultStylesheet = do
     color "#555"
     fontSize (px 14)
     fontStyle italic
-
