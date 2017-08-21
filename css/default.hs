@@ -11,6 +11,8 @@ main :: IO ()
 main = putCss defaultStylesheet 
 
 blueHighlight = "#1081a8"
+grayish' = "#f9f9f9" :: Color
+yellowish =  "#efef8f"
 
 orangy = rgb 255 80 10
 
@@ -24,6 +26,13 @@ defaultStylesheet = do
   body ? do
     color black
     fontSize (Clay.rem 1.2)
+
+  blockquote ? do
+    color "#666"
+    background grayish'
+    sym padding (px 10)
+    borderLeft solid (px 15) yellowish
+    boxShadow (px 2) (px 2) (px 15) "#ccc"
 
   p ? do
     lineHeight (Clay.rem 1.4)
