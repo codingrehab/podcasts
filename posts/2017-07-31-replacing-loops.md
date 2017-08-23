@@ -1,5 +1,5 @@
 ---
-title: Immutability and loops
+title: immutability-and-loops
 summary: In this episode we discuss working with immutable data structures and how to replace common constructs from OOP that usually use loops with well known functions.
 soundcloud: 333520893
 author: Amir Barylko
