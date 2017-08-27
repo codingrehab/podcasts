@@ -11,8 +11,8 @@ main :: IO ()
 main = putCss defaultStylesheet 
 
 blueHighlight = "#1081a8"
-grayish' = "#f9f9f9" :: Color
-yellowish =  "#efef8f"
+yellowLight   = "#fdfdc6" :: Color
+yellowDark    = "#ecec06"
 
 orangy = rgb 255 80 10
 
@@ -29,9 +29,9 @@ defaultStylesheet = do
 
   blockquote ? do
     color "#666"
-    background grayish'
+    background yellowLight
     sym padding (px 10)
-    borderLeft solid (px 15) yellowish
+    borderLeft solid (px 15) yellowDark
     boxShadow (px 2) (px 2) (px 15) "#ccc"
 
   p ? do
