@@ -9,7 +9,7 @@ author: Amir Barylko
 
 Working with immutable data structures can be a challenge when transitioning from languages like `Java`, `Javascript` or `C#` (where _having a state_ or _modifying the state_ is a common practice and idiomatic to the language) to languages like `Clojure`, `Haskell`, `F#`, `Elixir`, etc.
 
-But what does it mean to be _immutable_? It means the all the code you write or use can not modify an instance of an object or data structure but create a new one that reflects the change you expected.
+But what does it mean to be _immutable_? It means the all the code you write or use can not modify an instance of an object or data structure, rather it will create a new object that reflects the change you expected.
 
 For example in `Clojure` to add a new element to a collection you could use `conj` 
 
@@ -18,7 +18,7 @@ For example in `Clojure` to add a new element to a collection you could use `con
 
 </code></pre>
 
-The `conj` operation does not modify the collection but return a copy of it instead
+The `conj` operation does not modify the collection but returns a copy of it instead
 
 <pre class="klipse"><code class="eval-clojure"  data-loop-msec="2000">
 (let [original [1 2 3 4] copy (conj original 5)]
@@ -34,7 +34,7 @@ Immutability forces us to rethink how to write loops. Iterating over a collectio
 
 Lets consider transforming the elements of a collection one at a time by applying a function to each element and returning a new collection with the results.
 
-Though we will not use a classic `while` loop we can do something very similar by using _recursion_.
+Though we will not use a classic `while` loop, we can do something very similar by using _recursion_.
 
 Here we see an example of _incrementing_ the elements of a collection one at a time:
 
@@ -70,7 +70,7 @@ Here is another example for list comprehension taking the first ten elements:
 
 List comprehension help us to avoid repeating common operations.
 
-Many of these concepts are indeed so common that specific functions are included in each language to achieve the same functionality.
+Many of these concepts are indeed so common that specific functions are included in each language, to achieve the same functionality.
 
 Transforming elements using a function is called _mapping_. Thus the function is called `map`.
 
@@ -143,17 +143,17 @@ Here is another example taking all the numbers that are _greater than zero_, _in
      (filter even?))
 </code></pre>
 
-Though there is a combination of functions each element is only traversed once and on demand due to the lazy nature of sequences in `Clojure`.
+Though there is a combination of functions, each element is only traversed once and on demand — due to the lazy nature of sequences in `Clojure`.
 
 ## Food for thought 
 
-I can not emphasize enough how important is to learn as much as we can which common concepts are already implemented and how to use those functions in our code.
+I can not emphasize enough how important is to learn — as much as we can — which common concepts are already implemented and how to use those functions in our code.
 
 Here is a small list as a starting point.
 
 ### Concatenation and mapping
 
-We already talked about two of the most used functions `filter` and `map`. Mapping to a collection and concatenate the result after is a very common scenario. So common that there is a function that composes both.
+We already talked about two of the most used functions `filter` and `map`. Mapping to a collection and then concatenate the result is a very common scenario. So common, that there is a function that composes both.
 
 <pre class="klipse"><code class="eval-clojure"  data-loop-msec="2000">
 (mapcat reverse [[3 2 1 0] [6 5 4] [9 8 7]])
@@ -183,7 +183,7 @@ Another common scenario is taking (and dropping) elements.
 
 So far we looked at working with one element at a time. Here is a very useful function to combine elements of two or more collections.
 
-In `Haskell` the function is called `zip` and takes two collections and returns a collection of tuples with one element of each collection.
+In `Haskell` the function is called `zip`, which takes two collections and returns a single collection of tuples. Each tuple containing one element of each collection.
 
 ``` Haskell
 zip [1, 2, 3] [4, 5, 6] -- Returns [(1, 4), (2, 5), (3, 6)]
@@ -199,7 +199,7 @@ zip3 [1, 2, 3] [4, 5, 6] [7, 8, 9] -- return triplets [(1, 4, 7), ....]
 
 Luckily for us (being a dynamic language) in `Clojure` to implement the same functionality we use the same `map` function that we saw in the first example.
 
-The `map` function expects a function that the arity matches the collections passed as parameter. For two collections it should be a function that receives two parameters, for three collections a function that receives three parameters and son on.
+The `map` function expects another function whose arity matches the collections passed as parameter. For two collections it should be a function that receives two parameters; Three collections a function that receives three parameters, and so on.
 
 <pre class="klipse"><code class="eval-clojure"  data-loop-msec="2000">
 (map vector [1 2 3] [4 5 6] [7 8 9])
@@ -211,9 +211,9 @@ The `map` function expects a function that the arity matches the collections pas
 
 ### Reducing (folding)
 
-Reducing a collection means to transform all the elements not only one element at a time but also including an accumulator that can help us decide what to do.
+Reducing a collection means, to transform all the elements into a value. This transformation does not happen one element at a time, but in conjunction with an accumulator — which can help us decide what to do.
 
-The `reduce` function takes first a function with two parameters (the accumulator and the current element), then an initial value and last the collection which to take the elements from.
+The `reduce` function expects a function with two parameters (the accumulator and the current element), then an initial value and finally the collection from which to take the elements.
 
 For example suming all the elements of the collection
 
@@ -239,7 +239,7 @@ The intermediate steps can be obtained using `reductions`
 (group-by even? (range 1 20))
 </code></pre>
 
-`frequencies` is a reduction that checks the frequency of each element and returns a `hashmap` with the element as key and the count as value.
+`frequencies` is a reduction that checks the frequency of each element, and returns a `hashmap`. The hashmap contains the element as key and the count as a value.
 
 <pre class="klipse"><code class="eval-clojure"  data-loop-msec="2000">
 (frequencies [2 2 1 4 4 1 4 2 3])
@@ -249,7 +249,7 @@ The intermediate steps can be obtained using `reductions`
 
 Here are two more functions that can be useful to have in your toolbox.
 
-`partition` takes a number and a collection and returns that amount of elements at a time.
+`partition` takes a number, a collection and returns a new collection, partitioned by the given amount of elements.
 
 <pre class="klipse"><code class="eval-clojure"  data-loop-msec="2000">
 (partition 2 (range 20))
@@ -259,7 +259,7 @@ And last but not least, here is a very useful function that mimics a scenarios w
 
 And the sequence returned is `x, (f x), (f (f x)), (f (f (f x)))` and so on.
 
-Because is an infinite sequence we are taking the first twenty memebers of the sequence.
+Because this produces an infinite sequence, we are explicitly taking the first twenty memebers of the sequence.
 
 <pre class="klipse"><code class="eval-clojure"  data-loop-msec="2000">
 (take 20 (iterate inc 0))
@@ -273,12 +273,11 @@ Because is an infinite sequence we are taking the first twenty memebers of the s
 
 ## Summary
 
-Writing custom loops is a lot of effort and more often than not there is an alternative already written that can help you out. Sometimes needs to be combined with other functions and sometimes requires small helper functions.
+Writing custom loops is a lot of effort, and more often than not, there is an alternative already written to help you out. Functions often need to be combined with other functions and frequently require small helper functions.
 
-Though _list comprehensions_ and many of the functions we just reviewed are very common in functional languages they also exists in many others. 
+Though list comprehensions, and many of the functions we just reviewed are very common in functional languages, they also exists in many others language.
 
 Do not get discouraged, search for them, you may be surprised of what you will find.
-
 
 
 
