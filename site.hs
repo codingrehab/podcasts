@@ -16,12 +16,8 @@ main = hakyll $ do
     --   route   $ setExtension "css"
     --   compile $ getResourceString >>= withItemBody (unixFilter "runghc" [])
 
-    -- match "css/*.scss" $ do
-    --   route   $ setExtension "css"
-    --   compile compressScssCompiler
-
-    match "css/*.css" $ do
-      route   idRoute
+    match "css/*.scss" $ do
+      route $ setExtension "css"
       compile compressCssCompiler
 
     match "favicon*.*" $ do
