@@ -20,7 +20,7 @@ A developer will always be choosing between a different set of trade offs; There
 Let’s take the example from the podcast. Say we want to find the commit number a bug was introduced and the function `is-good` will tell us that the given version is bug free. Arbitrarily, I picked commit 10 to demonstrate. 
 
 ```
-(def commits [1 2 3 4 5 6 7 8 9 10 11 12]) 
+(def commits [0 1 2 3 4 5 6 7 8 9 10 11 12]) 
 
 (defn is-good [n] (< n 10))
 ```
@@ -28,15 +28,18 @@ Let’s take the example from the podcast. Say we want to find the commit number
 A clean and simple solution could be written as followed. 
 
 ```
-(-> commits take-while #(is-good %) inc)
+(defn clean-get-commit [] (->> commits (take-while #(is-good %)) last inc))
 
 ```
 Using a binary search we can optimize the solution to be faster, however, it is uglier and less clear what is going on. 
 
 ```
-(defn good-commit [last next]
-  (if (and (is-good next) (<= 1 (- last next)) next 
-      (if (is-good next) 
-         (recur next (Math.floor (/ (+ next (size commits)) 2))
-         (recur last (Math.floor (/ (+ last next) 2)))
+(defn binary-search-commit [f l]
+  (let [n (int (Math/floor (/ (+ f l) 2)))]
+    (if (<= (- l f) 1) l 
+        (if (is-good n)
+          (recur n l)
+          (recur f n)))))
+
+(defn dirty-get-commit [] (binary-search-commit (first commits) (last commits)))
 ```
