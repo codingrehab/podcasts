@@ -16,19 +16,54 @@ Example
 A java developer my lay out his primitives in an empty class
 
 ```
-int four 4; 
+public class divider{
+
+  int four; 
+  public divider(){
+    four = 4;
+  }
+
+}
+
 ```
 Then start to build functions around those primitives to encapsulate and give access to the rest of the program. 
 
 ```
-Static void getTwo(){
-  return four
+
+public class divider{
+
+  int four; 
+  public divider(){
+    four = 4;
+  }
+
+  static void getTwo(){
+    return four/2;
+  }
+
 }
+
 ```
 Later after considering how it will need to interact in a system — the interface may be developed. 
 
 ```
-public interface divideBy {}
+interface divideBy {
+  int getTwo(); 
+}
+
+public class divider implements divideBy{
+
+  int four; 
+  public divider(){
+    four = 4;
+  }
+
+  static void getTwo(){
+    return four/2;
+  }
+
+}
+
 ```      
 
 In a functional language the design or interface tends to come first. Looking at one of our [favorite books](http://learnyouahaskell.com/making-our-own-types-and-typeclasses#algebraic-data-types) we’ll use the shape example. 
@@ -45,4 +80,4 @@ surface :: Shape -> Float
 surface: (Circle _ _ r) = pi * r ^ 2
 ```
 
-You’ll notice the very last part to be created — of this small program — is the implementation. Strange isn’t it?! It’s almost as if the language wants you to think about the design first.
+You’ll notice the very last part to be created — of this small program — is the implementation with primitive types. Strange isn’t it?! It’s almost as if the language wants you to think about the design first.
