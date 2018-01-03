@@ -29,23 +29,52 @@ How we think about tests influences the code that we write.
 
 If I think about the problem in units, I may write a test to give me the result of a small function. However, a unit focused approach could lead to unnecessary testing with little to no benefits — that doesn’t do a great job describing the programs utility: like test below.
 
+To demonstrate let's use Clojure's `test.check` to create a property test. 
+
+Keep the following words of wisdom in mind, when developing property tests. 
+
+1. ["property based testing requires you to reason about how your program should behave"](http://hypothesis.works/articles/what-is-property-based-testing/)
+
+2. ["Rather than asserting that specific inputs to your code should result in a specific output, as with unit tests, property-based tests make statements about the expected behaviour of the code that should hold true for the entire domain of possible inputs. These statements are then verified for many different (pseudo)randomly generated inputs."](https://jonathangraham.github.io/2016/01/07/property_based_testing_clojure_functions)
+
+
+First let's reason about how our program should behave. Our problem requires that given a sequence of parenthesis — which represent floors - that we determine the level we end up at. 
+
+In this case our domain is a set of parenthesis. Let's create a generator that will give us parethesis. 
+
 ``` clojure
-(deftest parens 
-  (is (= 1 (parens “(“)))
-  (is (= -1 (parens “)”))))
+(require '[clojure.test.check.generators :as gen]) 
+(require '[clojure.test.check :as tc])
+(require '[clojure.test.check.properties :as prop])
 
+(gen/sample (gen/elements "()"))
+;; (\( \( \( \) \) \) \) \( \) \))
 
-
-(deftest 
-  (is (= [1 -1 1] (map-paren “()(“))))
 ```
 
-Moving to property testing we can see that the test describe the high-level specification of behavior for a range of data points. These tests are often  more concise, easier to maintain, and paint a better picture of what the program does. 
+Great! Now we're able to write a test that describes the high-level specification of behavior for a range of data points. In this case, we need to implement logic which should "hold true for the entire docmain of possible inputs."
+
+Below you'll notice that I have written a test that generates input — a random sequence of parenthesis — and then calculates the count I'd expect after running my funtion `floor`.
 
 ``` clojure
-(deftest ends-in-floor-3  
-  (is (= 3 (visit "(((")))
-  (is (= 3 (visit "(()(()("))))
-```  
+;; The code I'm testing
+(def is-open [c] (if (= c \( ) 1 -1)))
 
-Test Driven Development is still worth it. You should use tests to drive the design of your programs. Property testing will guide towards squeezing the most value out of concise and clean tests. 
+(floor [s] (reduce (fn [acc v] (+ (is-open v) acc )) 0 s))
+
+;; The property test
+(def test-with-generators·
+  (testing "generators"
+   (prop/for-all [input (gen/vector (gen/elements "()"))]
+     (let [floor-commands (apply str input)
+           command-count (count floor-commands)
+           floor-ups (count (filter #(= % \() floor-commands))
+           expected (- floor-ups (- command-count floor-ups))]
+            (is (=  expected (floor strs)))))))]))))
+
+(tc/quick-check 100 test-with-generators)
+```
+
+Given that the property test will run 100 times each with a different set of inputs — these tests are more concise, easier to maintain, and paint a better picture of what the program does than a unit test covering the same domain.  
+
+Test Driven Development is still worth it. You should use tests to drive the design of your programs. However, property testing will guide a developer towards squeezing the most value out of concise and clean tests. 
